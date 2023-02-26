@@ -1,10 +1,8 @@
 import java.io.*;
 import java.util.*;
-
 public class hw_4 {
     public static void main(String[] args) {
 
-//////////////////////////////////////////////////////////////////// Создание готового словаря
         Map<String, HashSet<String>> dict = new HashMap<>();
         HashSet<String> set1 = new HashSet<>();
         HashSet<String> set2 = new HashSet<>();
@@ -25,86 +23,106 @@ public class hw_4 {
         set3.add("75627368723");
         dict.put(name3, set2);
 
-        System.out.println("Вы хотите просмотреть все записи? 1 - да, 2 - нет");
-        Scanner scan = new Scanner(System.in);
-        int num1 = scan.nextInt();
-        if (num1 == 1) {
-            System.out.println(dict);
-        }
+//        System.out.println(dict);
 
-        System.out.println("Вы хотите добавить новую запись? 1 - да, 2 - нет");
-        int num2 = scan.nextInt();
-        if (num2 == 1) {
-            newData(dict);
-        }
-        else {
-            System.out.println(dict);
-        }
+        menu(dict);
 
-        System.out.println("Выполним поиск по логину? 1 - да, 2 - нет");
-        int num3 = scan.nextInt();
-        if (num3 == 1){
-            System.out.println("Чьи номера будем искать? Введите логин: ");
-            String str1 = scan.next();
-            System.out.printf("Номера телефонов по записи %s: ", str1 + " " + dict.get(str1));
-        }
-
-        System.out.println("Выполним удаление по логину? 1 - да, 2 - нет");
-        int num4 = scan.nextInt();
-        if (num4 == 1){
-            System.out.println("Чью запись будем удалять? Введите логин: ");
-            String str2 = scan.next();
-            System.out.println("Все записи до удаления: \n" + dict);
-            dict.remove(str2);
-            System.out.println("Все записи после удаления: \n" + dict);
-        }
-        scan.close();
     }
-    /////////////////////////////////////////////////////////////////// Добавление нового элемента в словарь
-    public static void newData(Map<String, HashSet<String>> dict) {
+
+    static void menu(Map<String, HashSet<String>> dict) {
+
+        System.out.print("Введите номер операции для выбора действия: \n" +
+                "1. Добавить контакт.\n" +
+                "2. Найти контакт.\n" +
+                "3. Удалить контакт.\n" +
+                "4. Вывод всех записей.\n" +
+                "5. Выход. \n" +
+                ":_> ");
+
+        int num = readInt();
+
+        switch (num) {
+            case 1 -> addNumber(dict);
+            case 2 -> findNumber(dict);
+            case 3 -> deleteNumber(dict);
+            case 4 -> {System.out.println(dict);
+                      System.out.println();
+                      menu(dict);}
+            case 5 -> {System.out.println("До скорой встречи!");
+                      System.exit(0) ;}
+        }
+    }
+
+    static void deleteNumber(Map<String, HashSet<String>> dict) {
+
+        System.out.println("Введите имя контакта для удаления.");
+        String name = readStr();
+        dict.remove(name);
+        System.out.println("Список контактов после удаления: \n" + dict);
+        System.out.println();
+        menu(dict);
+    }
+
+    static void findNumber(Map<String, HashSet<String>> dict) {
+        System.out.println("Введите имя контакта для поиска.");
+        String name = readStr();
+
+        HashSet<String> value = dict.get(name);
+
+        System.out.printf("Номера телефонов контакта %s", name + "\n" + value + "\n");
+        System.out.println();
+        menu(dict);
+    }
+
+    static void addNumber(Map<String, HashSet<String>> dict) {
+
+        System.out.println("Введите имя: ");
+        String name = readStr();
+
+        System.out.println("Введите сколько номеров будет у данного пользователя (максимум 3): ");
+        int countNumber = readInt();
 
         HashSet<String> set = new HashSet<>();
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Введите имя: ");
-        String name = scan.next();
-        System.out.println("Введите количество номеров телефона у данного человека (до 3-х): ");
-        int countTel = scan.nextInt();
-
-        switch (countTel) {
+                switch (countNumber) {
             case (1):
                 System.out.println("Введите номер телефона: ");
-                String telNumber11 = scan.next();
+                String telNumber11 = readStr();
                 set.add(telNumber11);
                 break;
             case (2):
                 System.out.println("Введите 1 номер телефона: ");
-                String telNumber21 = scan.next();
+                String telNumber21 = readStr();
                 System.out.println("Введите 2 номер телефона: ");
-                String telNumber22 = scan.next();
+                String telNumber22 = readStr();
                 set.add(telNumber21);
                 set.add(telNumber22);
                 break;
             case (3):
                 System.out.println("Введите 1 номер телефона: ");
-                String telNumber31 = scan.next();
+                String telNumber31 = readStr();
                 System.out.println("Введите 2 номер телефона: ");
-                String telNumber32 = scan.next();
+                String telNumber32 = readStr();
                 System.out.println("Введите 3 номер телефона: ");
-                String telNumber33 = scan.next();
+                String telNumber33 = readStr();
                 set.add(telNumber31);
                 set.add(telNumber32);
                 set.add(telNumber33);
                 break;
         } // switch
 
-        scan.close();
-
         dict.put(name, set);
-
         System.out.println(dict);
+        menu(dict);
+    }
+
+    static int readInt() {
+        Scanner scanner = new Scanner(System.in);
+        int num = scanner.nextInt();
+        return num;
+    }
+    static String readStr() {
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.nextLine();
+        return name;
     }
 }
-
-
-
-
